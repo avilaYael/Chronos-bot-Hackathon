@@ -54,6 +54,42 @@ Para llevar el proyecto al siguiente nivel antes de la entrega final, proponemos
 
 ---
 
+## 📂 Estructura y Arquitectura Modular (Refactorización EINNOVACION MX)
+
+Para garantizar un desarrollo escalable y ordenado, el proyecto ha sido estructurado en una arquitectura modular por capas en la carpeta `src/`:
+
+```text
+src/
+├── app/                       # Rutas y Endpoints de Next.js (App Router)
+│   ├── api/
+│   │   ├── compare/route.ts   # Endpoint de comparación (GPU estándar)
+│   │   └── swarm/route.ts     # Endpoint de enjambre (Cerebras Gemma 4)
+│   ├── layout.tsx             # Layout global
+│   └── page.tsx               # Contenedor de la vista principal del Dashboard
+├── components/                # Componentes React modulares de UI y simulación
+│   ├── dashboard/
+│   │   ├── SettingsPanel.tsx  # Controles de grilla, A*, voz y grabador
+│   │   ├── SwarmConsole.tsx   # Consola de razonamiento del enjambre
+│   │   └── TelemetryPanel.tsx # Tarjetas de métricas comparativas en vivo
+│   ├── simulation/
+│   │   └── SimulationCanvas.tsx # Canvas de simulación y lógica visual
+│   └── ui/
+│       └── CyberCard.tsx      # Tarjeta cyberpunk con contornos neón
+├── hooks/                     # Custom Hooks para el aislamiento de lógica
+│   ├── useSimulation.ts       # Orquestador del estado de simulación y autoplay loop
+│   ├── useVoice.ts            # Síntesis de voz (Web Speech API)
+│   └── useRecorder.ts         # Orquestador de MediaRecorder de canvas
+├── lib/                       # Algoritmos e infraestructura matemática
+│   └── astar.ts               # Algoritmo A* local
+├── services/                  # Servicios de backend e integraciones de IA
+│   ├── cerebrasService.ts     # Llamadas a Cerebras SDK (Agentes Perceptor/Estratega)
+│   └── gpuService.ts          # Simulación/Cálculo de telemetría de GPU estándar
+└── types/                     # Tipados estáticos de TypeScript
+    └── index.ts               # Definición de interfaces globales (logs, métricas, etc.)
+```
+
+---
+
 ## ⚙️ Configuración del Proyecto
 
 ### Requisitos Previos
@@ -61,9 +97,14 @@ Para llevar el proyecto al siguiente nivel antes de la entrega final, proponemos
 - npm (v10 o superior)
 
 ### 1. Variables de Entorno
-Crea un archivo `.env` en la raíz del proyecto y agrega tu API Key de Cerebras:
-```bash
+Crea un archivo `.env` en la raíz del proyecto con la configuración de las credenciales:
+```env
+# Clave obligatoria para el funcionamiento del enjambre multi-agente
 CEREBRAS_API_KEY="tu_clave_de_api_de_cerebras"
+
+# Claves opcionales para habilitar la telemetría GPU real en el panel comparativo
+TOGETHER_API_KEY="tu_api_key_de_together_ai"
+OPENAI_API_KEY="tu_api_key_de_openai"
 ```
 
 ### 2. Instalación de Dependencias
