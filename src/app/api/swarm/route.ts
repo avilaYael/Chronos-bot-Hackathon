@@ -101,8 +101,6 @@ ${perceptorReport}`,
                 items: {
                   type: 'array',
                   items: { type: 'integer' },
-                  minItems: 2,
-                  maxItems: 2,
                 },
                 description: 'Lista de las próximas 3 coordenadas predichas [x, y] para optimizar el render',
               },
