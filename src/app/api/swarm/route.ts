@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import Cerebras from '@cerebras/cerebras_cloud_sdk';
 
-// Initialize OpenAI client configured for Cerebras Cloud
-const client = new OpenAI({
+// Initialize the official Cerebras SDK client
+const client = new Cerebras({
   apiKey: process.env.CEREBRAS_API_KEY || '',
-  baseURL: 'https://api.cerebras.ai/v1',
 });
 
 export async function POST(req: NextRequest) {
@@ -53,7 +52,7 @@ Genera un reporte conciso y resumido en formato textual plano con las coordenada
 
     const endPerceptor = performance.now();
     const perceptorLatency = Math.round(endPerceptor - startPerceptor);
-    const perceptorReport = perceptorResponse.choices[0]?.message?.content || 'No se pudo generar el reporte del perceptor.';
+    const perceptorReport = (perceptorResponse as any).choices?.[0]?.message?.content || 'No se pudo generar el reporte del perceptor.';
     const perceptorTimeInfo = (perceptorResponse as any).time_info || null;
     const perceptorUsage = perceptorResponse.usage || null;
 
@@ -123,7 +122,7 @@ ${perceptorReport}`,
 
     const endEstratega = performance.now();
     const estrategaLatency = Math.round(endEstratega - startEstratega);
-    const estrategaRawContent = estrategaResponse.choices[0]?.message?.content || '{}';
+    const estrategaRawContent = (estrategaResponse as any).choices?.[0]?.message?.content || '{}';
     
     let estrategaDecision = {
       next_move: '',
